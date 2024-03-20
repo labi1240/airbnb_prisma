@@ -70,3 +70,61 @@ model Reservation {
   Home   Home?   @relation(fields: [homeId], references: [id])
   homeId String?
 }
+model Property {
+  id               String   @id @default(uuid())
+  name             String
+  status           String
+  price            String?
+  incentives       String?
+  address          String
+  developer        String
+  buildingType     String
+  unitsStories     String?
+  bedrooms         String
+  sizeSqFt         String
+  estimatedCompletion String
+  summary          String
+  units            Unit[]
+  galleryData      GalleryData[]
+}
+
+model Unit {
+  id                 String    @id @default(uuid())
+  propertyId         String
+  status             String
+  statusName         String
+  colType            String
+  unitType           String
+  unitName           String
+  br                 Float
+  ba                 Int
+  sqft               Int
+  lotBalc            String?
+  price              Int?
+  lastPrice          Int?
+  lastPriceWithValue Int?
+  unitStyle          String
+  url                String
+  image              String
+  label              String?
+  labelColor         String?
+  providerPlan       String?
+  prelaunch          Boolean   @default(false)
+  quickMoveInDate    String?
+  isQuickMoveIn      Boolean   @default(false)
+  displayPricePerSqFt Boolean  @default(true)
+  Property           Property  @relation(fields: [propertyId], references: [id])
+
+  @@index([propertyId])
+}
+
+model GalleryData {
+  id           String   @id @default(uuid())
+  propertyId   String
+  objectID     String
+  galleryID    String
+  images       Json  // Storing images array as JSON
+  Property     Property @relation(fields: [propertyId], references: [id])
+
+  @@index([propertyId])
+}
